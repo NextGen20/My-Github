@@ -100,29 +100,6 @@ Once the container is running, you can access the application via:
 http://localhost:5000
 ```
 
-## Stopping the Container
-
-To stop the running container:
-
-```bash
-docker stop flask-container
-```
-
-## Removing the Container
-
-To remove the stopped container:
-
-```bash
-docker rm flask-container
-```
-
-## Removing the Image
-
-If you want to remove the Docker image:
-
-```bash
-docker rmi flask-app
-```
 
 ## Endpoints
 
