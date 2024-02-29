@@ -2,6 +2,9 @@ pipeline {
     agent {
         label 'slave'
     }
+     environment {
+    DOCKER_CREDENTIALS = credentials('DOCKER_PASSWORD')
+  }
 
     stages {
         stage('Git Clone') {
@@ -51,7 +54,7 @@ pipeline {
     
         stage('PUSH-To-DOCKERHUB') {
             steps {
-                sh 'sudo docker login -u porto23 -p Amit29789'
+                sh 'sudo docker login -u porto23 -p ${DOCKER_CREDENTIALS}'
                 sh "sudo docker push porto23/flaskproject:flask_app-latest"
             }
         }
