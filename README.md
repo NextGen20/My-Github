@@ -1,10 +1,9 @@
-Based on the provided Python file, here is a sample README for your GitHub repository:
 
 ---
 
 # Flask Web Application
 
-This repository contains a Flask web application that provides a simple user signup and profile management system. The application uses SQLAlchemy for database operations and Flask-Migrate for database migrations.
+This repository contains a Flask web application that provides a simple user signup and profile management system. The application uses SQLAlchemy for database operations and Flask-Migrate for database migrations,also with test file in pytest that make sure that the signup page will be passed and valid.
 
 ## Features
 
@@ -24,12 +23,12 @@ This repository contains a Flask web application that provides a simple user sig
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/your-repository-name.git
+   git clone https://github.com/NextGen20/My-Github.git
    ```
 
 2. Change into the repository directory:
    ```
-   cd your-repository-name
+   cd to your flask repo name .
    ```
 
 3. Create a virtual environment and activate it:
