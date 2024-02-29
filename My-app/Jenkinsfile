@@ -1,0 +1,81 @@
+pipeline {
+    agent {
+        label 'slave'
+    }
+
+    stages {
+        stage('Git Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/NextGen20/Main-Project.git'
+            }
+        }
+
+        stage('Build & Run Image') {
+            steps {
+                script {
+                    // env.VERSION = "1.0.${env.BUILD_NUMBER}"
+                    sh "sudo docker build -t porto23/flaskproject:flask_app-latest ./first-app"
+                    sh "sudo docker run --name flaskapp1 -d -p 5000:5000 porto23/flaskproject:flask_app-latest"
+                }
+            }
+        }
+       
+        stage('Test-App') {
+            steps {
+                dir('first-app/test_app') {
+                    sh 'python3 -m pytest test_app.py'
+                }
+            }
+        }
+        // // stage('AWS S3 Upload') {
+        // //     steps {
+        // //         withAWS(credentials: 'aws-key', region: 'us-west-2') {
+        // //             s3Upload(bucket: 'jenkins-sqlabs-amitb', path: 'project1/', includePathPattern: '**/test.log'
+        // //             , workingDir: '/home/ubuntu/workspace/test-docker-2/first-app/test_app')
+                
+        // //         }
+        // //     }
+        // }
+        stage('AWS S3 Upload') {
+    steps {
+        sh '''
+            aws s3 cp /home/ubuntu/workspace/fianl-project-pipe/first-app/test_app/test.log s3://jenkins-sqlabs-amitb/project1/ --region us-east-1
+        '''
+    }
+}
+        // stage('DynamoDB Item Insertion') {
+        //     steps {
+        //         withAWS(credentials: 'aws-key', region: 'us-east-1') {
+                    
+        //             sh "aws dynamodb put-item --table-name TestLogs --item '{\"LogId\": {\"S\": \"${env.BUILD_TIMESTAMP} - Test Successful!\"}}'"
+                    
+        //         }
+        //     }
+        // }
+
+        stage('DynamoDB Item Insertion') {
+    steps {
+        sh """
+            aws dynamodb put-item \
+                --table-name TestLogs \
+                --item '{\"LogId\": {\"S\": \"${env.BUILD_TIMESTAMP} - Test Successful!\"}}' \
+                --region us-west-2
+        """
+    }
+}
+        
+    
+        stage('PUSH-To-DOCKERHUB') {
+            steps {
+                sh 'sudo docker login -u porto23 -p Amit29789'
+                sh "sudo docker push porto23/flaskproject:flask_app-latest"
+            }
+        }
+    }
+        post {
+            always {
+                sh 'sudo docker stop $(sudo docker ps -aq)'
+                sh 'sudo docker rm $(sudo docker ps -aq)'
+            }
+        }
+}
