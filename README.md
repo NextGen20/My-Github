@@ -19,7 +19,7 @@ This repository contains a Flask web application that provides a simple user sig
 - Flask-Migrate
 - Prometheus client (for metrics)
 
-## Installation
+## Installation First option Run Local:
 
 1. Clone the repository:
    ```
@@ -62,6 +62,67 @@ This repository contains a Flask web application that provides a simple user sig
    ```
 
 The application will be accessible at `http://127.0.0.1:5000/`.
+
+## Installation Second option Run with Contaienr:
+
+## Prerequisites
+
+- Install Docker Engine
+
+### Clone the Repository (Optional)
+
+```bash
+git clone https://github.com/NextGen20/My-Github.git
+cd your-repository
+```
+
+### Build the Docker Image
+
+```bash
+docker build -t flask-app .
+```
+
+This command will build a Docker image based on the `Dockerfile` in the current directory.
+
+### Run the Container
+
+```bash
+docker run -d --name flask-container -p 5000:5000 flask-app
+```
+
+This command will run a container from your image, mapping port 5000 of the container to port 5000 of the host.
+
+## Accessing the Application
+
+Once the container is running, you can access the application via:
+
+```
+http://localhost:5000
+```
+
+## Stopping the Container
+
+To stop the running container:
+
+```bash
+docker stop flask-container
+```
+
+## Removing the Container
+
+To remove the stopped container:
+
+```bash
+docker rm flask-container
+```
+
+## Removing the Image
+
+If you want to remove the Docker image:
+
+```bash
+docker rmi flask-app
+```
 
 ## Endpoints
 
